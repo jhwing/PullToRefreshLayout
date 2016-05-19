@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">PullToRefreshLayout</string>
+    <string name="refreshTip">下拉可以刷新...</string>
+    <string name="refreshTip_refreshing">刷新中...</string>
+    <string name="refreshTip_ready">松开可以刷新&#8230;</string>
+    <string name="refreshTime">上次刷新时间:%1$d分钟之前</string>
+</resources>
