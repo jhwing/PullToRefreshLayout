@@ -83,7 +83,7 @@ public class PullToRefreshLayout extends ViewGroup implements NestedScrollingPar
         mSpinnerFinalOffset = DEFAULT_CIRCLE_TARGET * metrics.density;
         mTotalDragDistance = mSpinnerFinalOffset;
         mHeaderView = new BaseRefreshHeader(getContext());
-        addView(mHeaderView);
+        addView(mHeaderView, LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
         mNestedScrollingParentHelper = new NestedScrollingParentHelper(this);
         mNestedScrollingChildHelper = new NestedScrollingChildHelper(this);
         setNestedScrollingEnabled(true);
@@ -127,7 +127,7 @@ public class PullToRefreshLayout extends ViewGroup implements NestedScrollingPar
         final int childWidth = width - getPaddingLeft() - getPaddingRight();
         final int childHeight = height - getPaddingTop() - getPaddingBottom();
 
-        Log.d("jihongwen", "mCurrentTargetOffsetTop:" + mCurrentTargetOffsetTop);
+        // Log.d("jihongwen", "mCurrentTargetOffsetTop:" + mCurrentTargetOffsetTop);
         // 触发layout时child位置为实际滑动到的位置
         child.layout(childLeft, childTop + mCurrentTargetOffsetTop, childLeft + childWidth, childTop + childHeight + mCurrentTargetOffsetTop);
         mHeaderView.layout(childLeft, childTop, childLeft + childWidth, childTop + childHeight);
@@ -341,7 +341,7 @@ public class PullToRefreshLayout extends ViewGroup implements NestedScrollingPar
                 final float overScrollTop = (y - mInitialMotionY) * DRAG_RATE; // 滑动偏移量
                 if (mIsBeingDragged) {
                     if (overScrollTop > 0) {
-                        Log.d("jihongwen", "onTouchEvent");
+                        // Log.d("jihongwen", "onTouchEvent");
                         moveSpinner(overScrollTop);
                     } else {
                         return false;

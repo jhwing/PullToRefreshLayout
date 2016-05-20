@@ -66,6 +66,8 @@ public class RefreshHeaderView extends RelativeLayout implements RefreshHandler 
         }
         mState = STATE_NORMAL;
         refreshTip.setText(getResources().getString(R.string.refreshTip));
+        refreshProgress.setVisibility(GONE);
+        refreshArrow.setVisibility(VISIBLE);
         refreshArrow.clearAnimation();
         refreshArrow.startAnimation(mRotateDownAnim);
     }
@@ -84,11 +86,16 @@ public class RefreshHeaderView extends RelativeLayout implements RefreshHandler 
     @Override
     public void onRefreshing() {
         refreshTip.setText(getResources().getString(R.string.refreshTip_refreshing));
+        refreshArrow.clearAnimation();
+        refreshArrow.setVisibility(GONE);
+        refreshProgress.setVisibility(VISIBLE);
     }
 
     @Override
     public void onRefreshComplete() {
-
+//        refreshTip.setText(getResources().getString(R.string.refreshTip));
+//        refreshProgress.setVisibility(GONE);
+//        refreshArrow.setVisibility(VISIBLE);
     }
 
     /**

@@ -25,7 +25,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         refreshLayout = (PullToRefreshLayout) findViewById(R.id.ptrLayout);
-        refreshLayout.setHeaderView(new RefreshHeaderView(this));
+        refreshLayout.setHeaderView(new DropHeaderLayout(this), true);
+//        refreshLayout.setHeaderView(new RefreshHeaderView(this));
         refreshLayout.setOnRefreshListener(new PullToRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
