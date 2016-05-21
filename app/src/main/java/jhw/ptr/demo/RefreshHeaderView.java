@@ -2,7 +2,6 @@ package jhw.ptr.demo;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
@@ -35,12 +34,15 @@ public class RefreshHeaderView extends RelativeLayout implements RefreshHandler 
     private Animation mRotateUpAnim;
     private Animation mRotateDownAnim;
 
+    int h;
+
     public RefreshHeaderView(Context context) {
         this(context, null);
     }
 
     public RefreshHeaderView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        setWillNotDraw(false);
         View.inflate(context, R.layout.refresh_header_view, this);
         refreshTip = (TextView) findViewById(R.id.refreshTip);
         refreshTime = (TextView) findViewById(R.id.refreshTime);
@@ -56,31 +58,32 @@ public class RefreshHeaderView extends RelativeLayout implements RefreshHandler 
                 Animation.RELATIVE_TO_SELF, 0.5f);
         mRotateDownAnim.setDuration(ROTATE_ANIM_DURATION);
         mRotateDownAnim.setFillAfter(true);
-
+        h = (int) (50 * getResources().getDisplayMetrics().density);
     }
 
     @Override
-    public void onRefreshBegin() {
-        if (mState == STATE_NORMAL) {
-            return;
-        }
+    public void onRefreshPullBegin() {
+//        if (mState == STATE_NORMAL) {
+//            return;
+//        }
         mState = STATE_NORMAL;
         refreshTip.setText(getResources().getString(R.string.refreshTip));
         refreshProgress.setVisibility(GONE);
         refreshArrow.setVisibility(VISIBLE);
         refreshArrow.clearAnimation();
         refreshArrow.startAnimation(mRotateDownAnim);
+        requestLayout();
     }
 
     @Override
-    public void onRefreshReady() {
+    public void onRefreshPrepare() {
         if (mState == STATE_READY) {
             return;
         }
         mState = STATE_READY;
-        refreshTip.setText(getResources().getString(R.string.refreshTip_ready));
-        refreshArrow.clearAnimation();
-        refreshArrow.startAnimation(mRotateUpAnim);
+//        refreshTip.setText(getResources().getString(R.string.refreshTip_ready));
+//        refreshArrow.clearAnimation();
+//        refreshArrow.startAnimation(mRotateUpAnim);
     }
 
     @Override
@@ -116,13 +119,38 @@ public class RefreshHeaderView extends RelativeLayout implements RefreshHandler 
     @Override
     public void onRefreshChangePercent(float dragPercent) {
         float adjustedPercent = (float) Math.min(Math.max(dragPercent - .3, 0) * 2, 1f);
-        Log.d("jihongwen", "adjustedPercent:" + adjustedPercent);
+        refreshArrow.setVisibility(VISIBLE);
         refreshArrow.setScaleY(adjustedPercent);
         refreshArrow.setScaleX(adjustedPercent);
     }
 
     @Override
-    public View getView() {
+    public void onReturnToStart() {
+        mState = -1;
+    }
+
+    @Override
+    public View getHeaderView() {
         return this;
+    }
+
+    @Override
+    public float spinnerFinalOffset() {
+        return h;
+    }
+
+    @Override
+    public float totalDragDistance() {
+        return h;
+    }
+
+    @Override
+    public int originalOffsetTop() {
+        return -h;
+    }
+
+    @Override
+    public int getHeaderHeight() {
+        return h;
     }
 }

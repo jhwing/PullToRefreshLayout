@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jhw.ptr.PullToRefreshLayout;
+import jhw.ptr.RefreshHandler;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,13 +21,18 @@ public class MainActivity extends AppCompatActivity {
     PullToRefreshLayout refreshLayout;
     RecyclerView recyclerView;
 
+    RefreshHandler refreshHandler;
+
+    boolean is = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         refreshLayout = (PullToRefreshLayout) findViewById(R.id.ptrLayout);
-        refreshLayout.setHeaderView(new DropHeaderLayout(this), true);
-//        refreshLayout.setHeaderView(new RefreshHeaderView(this));
+        refreshLayout.setPullRefresh(false);
+        refreshHandler = new RefreshHeaderView(this);
+        refreshLayout.setHeaderView(refreshHandler, false);
         refreshLayout.setOnRefreshListener(new PullToRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {

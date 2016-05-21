@@ -4,8 +4,8 @@ import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import jhw.ptr.RefreshHandler;
@@ -16,6 +16,8 @@ import jhw.ptr.RefreshHandler;
 public class DropHeaderLayout extends RelativeLayout implements RefreshHandler {
 
     DropView mDropView;
+
+    int h;
 
     public DropHeaderLayout(Context context) {
         super(context);
@@ -37,25 +39,29 @@ public class DropHeaderLayout extends RelativeLayout implements RefreshHandler {
         final DisplayMetrics metrics = getResources().getDisplayMetrics();
 
         mDropView = new DropView(context);
-        addView(mDropView);
+        addView(mDropView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         RelativeLayout.LayoutParams layoutParams = (LayoutParams) mDropView.getLayoutParams();
-        layoutParams.width = (int) (200 * metrics.density);
-        layoutParams.height = 0;
+        layoutParams.width = (int) (60 * metrics.density);
+        layoutParams.height = (int) (60 * metrics.density);
+        h = (int) (60 * metrics.density);
         layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
         mDropView.setLayoutParams(layoutParams);
         mDropView.setColor(Color.RED);
+//        mDropView.setBackgroundColor(Color.GREEN);
+//        setBackgroundColor(Color.GREEN);
 
     }
 
     @Override
-    public void onRefreshBegin() {
+    public void onRefreshPullBegin() {
         mDropView.reset();
         mDropView.showLoadingIcon(true);
+//        mDropView.invalidate();
+        mDropView.requestLayout();
     }
 
     @Override
-    public void onRefreshReady() {
-
+    public void onRefreshPrepare() {
     }
 
     @Override
@@ -65,7 +71,6 @@ public class DropHeaderLayout extends RelativeLayout implements RefreshHandler {
 
     @Override
     public void onRefreshComplete() {
-//        mDropView.reset();
     }
 
     int myOffset = 0;
@@ -73,11 +78,20 @@ public class DropHeaderLayout extends RelativeLayout implements RefreshHandler {
     @Override
     public void onRefreshChange(int offset) {
         myOffset += offset;
-        Log.d("jihongwen", "myOffset:" + myOffset);
-        int h = mDropView.getLayoutParams().height;
-        mDropView.getLayoutParams().height = h + offset;
-        mDropView.setDistanceY(-((int) ((myOffset - 150) * 0.9f)));
-        mDropView.requestLayout();
+        if (getTop() >= 0) {
+            int hh = mDropView.getLayoutParams().height;
+            mDropView.getLayoutParams().height = hh + offset;
+            LayoutParams layoutParams = (LayoutParams) mDropView.getLayoutParams();
+            mDropView.setDistanceY(-((int) ((myOffset - 150) * 0.9f)));
+            mDropView.setLayoutParams(layoutParams);
+        }
+//        int hh = mDropView.getLayoutParams().height;
+//        mDropView.getLayoutParams().height = hh + offset;
+//        LayoutParams layoutParams = (LayoutParams) mDropView.getLayoutParams();
+//        mDropView.setDistanceY(-((int) ((myOffset - 50) * 0.9f)));
+//        mDropView.setLayoutParams(layoutParams);
+        //mDropView.requestLayout();
+
     }
 
     @Override
@@ -86,7 +100,33 @@ public class DropHeaderLayout extends RelativeLayout implements RefreshHandler {
     }
 
     @Override
-    public View getView() {
+    public void onReturnToStart() {
+        mDropView.reset();
+        mDropView.getLayoutParams().height = h;
+    }
+
+    @Override
+    public View getHeaderView() {
         return this;
+    }
+
+    @Override
+    public float spinnerFinalOffset() {
+        return (float) (h + 200);
+    }
+
+    @Override
+    public float totalDragDistance() {
+        return (float) (h + 200);
+    }
+
+    @Override
+    public int originalOffsetTop() {
+        return -h;
+    }
+
+    @Override
+    public int getHeaderHeight() {
+        return h;
     }
 }

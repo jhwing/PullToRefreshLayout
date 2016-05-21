@@ -10,12 +10,10 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 
@@ -111,7 +109,6 @@ public class DropView extends FrameLayout {
 
     public void setDistanceY(int distanceY) {
         if (mMode == Mode.PULL) {
-            Log.d("jihongwen", "setDistanceY  distanceY:" + distanceY + "-mPullThreshold:" + (-mPullThreshold));
             if (distanceY < -mPullThreshold) {
                 return;
             }
@@ -122,8 +119,8 @@ public class DropView extends FrameLayout {
             }
 
             onDistanceYChanged(mDistanceY);
-            ((ViewGroup) getParent()).invalidate();
-            //invalidate();
+//            ((ViewGroup) getParent()).invalidate();
+            invalidate();
         }
     }
 
@@ -136,7 +133,6 @@ public class DropView extends FrameLayout {
 
         mRadius2 = (int) v;
 
-        System.out.println("getScrollPercent() = " + getScrollPercent());
         v = mMinRadius1 + (mMaxRadius1 - mMinRadius1) * (1 - getScrollPercent());
         if (v < mMinRadius1) {
             v = mMinRadius1;
@@ -209,7 +205,6 @@ public class DropView extends FrameLayout {
     @Override
     protected void onDraw(Canvas canvas) {
 
-        Log.d("jihongwen", "mode:" + mMode);
         if (mMode == Mode.PULL) {
             drawPull(canvas);
         }
@@ -225,7 +220,6 @@ public class DropView extends FrameLayout {
         int cp1Y = mTopPadding + mRadius1;
         Point cp1 = new Point(getWidth() / 2, cp1Y);
         int cp2Y = cp1Y + (-mDistanceY);
-        Log.d("jihongwen", "cp2Y:" + cp2Y);
         Point cp2 = new Point(getWidth() / 2, cp2Y);
 
         Path path = new Path();
