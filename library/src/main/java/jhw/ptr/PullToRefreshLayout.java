@@ -151,8 +151,8 @@ public class PullToRefreshLayout extends ViewGroup implements NestedScrollingPar
         final int right = left + mHeaderView.getMeasuredWidth();
         final int bottom = top + mHeaderView.getMeasuredHeight();
         mHeaderView.layout(left, top, right, bottom);
-        Log.d("jihongwen", "left:" + left + "top:" + top + "right:" + right + "bottom:" + bottom);
-        Log.d("jihongwen", "mHeaderOffsetTop:" + mHeaderOffsetTop);
+//        Log.d("jihongwen", "left:" + left + "top:" + top + "right:" + right + "bottom:" + bottom);
+//        Log.d("jihongwen", "mHeaderOffsetTop:" + mHeaderOffsetTop);
 
         //mHeaderView.layout(childLeft, childTop, childLeft + childWidth, childTop + childHeight);
     }
@@ -539,7 +539,7 @@ public class PullToRefreshLayout extends ViewGroup implements NestedScrollingPar
      */
     private void moveToStart(float interpolatedTime) {
         int targetTop = (mFrom + (int) ((mOriginalOffsetTop - mFrom) * interpolatedTime));
-        Log.d("jihongwen", "animateOffsetToStartPosition targetTop" + targetTop);
+//        Log.d("jihongwen", "animateOffsetToStartPosition targetTop" + targetTop);
         int offset = targetTop - mTarget.getTop();
         if (offset == 0 && interpolatedTime == 1) {// 偏移量位0,并且动画执行完成
             mHeaderView.onReturnToStart();
@@ -575,7 +575,7 @@ public class PullToRefreshLayout extends ViewGroup implements NestedScrollingPar
         @Override
         public void applyTransformation(float interpolatedTime, Transformation t) {
             //int endTarget = (int) (mSpinnerFinalOffset - Math.abs(mOriginalOffsetTop));
-            Log.d("jihongwen", "mAnimateToCorrectPosition mFrom" + mFrom);
+//            Log.d("jihongwen", "mAnimateToCorrectPosition mFrom" + mFrom);
             int endTarget = (mHeaderView.getHeaderHeight() - Math.abs(mOriginalOffsetTop));
             int targetTop = (mFrom + (int) ((endTarget - mFrom) * interpolatedTime));
             int offset = targetTop - mTarget.getTop();
@@ -601,7 +601,7 @@ public class PullToRefreshLayout extends ViewGroup implements NestedScrollingPar
         mHeaderView.offsetTopAndBottom(offset);
         mHeaderOffsetTop = mHeaderView.getTop();
 
-        Log.d("jihongwen", "setTargetOffsetTopAndBottom  mHeaderView getTop() " + mHeaderView.getTop() + " getBottom()" + mHeaderView.getBottom() + "  mTarget.getTop():" + mTarget.getTop());
+//        Log.d("jihongwen", "setTargetOffsetTopAndBottom  mHeaderView getTop() " + mHeaderView.getTop() + " getBottom()" + mHeaderView.getBottom() + "  mTarget.getTop():" + mTarget.getTop());
 //        Log.d("jihongwen", "setTargetOffsetTopAndBottom  mHeaderOffsetTop " + mHeaderOffsetTop + "  mCurrentTargetOffsetTop:" + mCurrentTargetOffsetTop);
 
         if (requiresUpdate && android.os.Build.VERSION.SDK_INT < 11) {

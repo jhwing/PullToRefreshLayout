@@ -2,7 +2,9 @@ package jhw.ptr.demo;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
@@ -63,16 +65,21 @@ public class RefreshHeaderView extends RelativeLayout implements RefreshHandler 
 
     @Override
     public void onRefreshPullBegin() {
-//        if (mState == STATE_NORMAL) {
-//            return;
-//        }
+        ViewGroup parent = (ViewGroup) getParent();
+        Log.d("jihongwen", "onRefreshPullBegin  requestLayout" + parent.getBottom());
+        if (parent.getBottom() == 20) {
+            requestLayout();
+        }
+
+        if (mState == STATE_NORMAL) {
+            return;
+        }
         mState = STATE_NORMAL;
         refreshTip.setText(getResources().getString(R.string.refreshTip));
         refreshProgress.setVisibility(GONE);
         refreshArrow.setVisibility(VISIBLE);
         refreshArrow.clearAnimation();
         refreshArrow.startAnimation(mRotateDownAnim);
-        requestLayout();
     }
 
     @Override
@@ -81,9 +88,9 @@ public class RefreshHeaderView extends RelativeLayout implements RefreshHandler 
             return;
         }
         mState = STATE_READY;
-//        refreshTip.setText(getResources().getString(R.string.refreshTip_ready));
-//        refreshArrow.clearAnimation();
-//        refreshArrow.startAnimation(mRotateUpAnim);
+        refreshTip.setText(getResources().getString(R.string.refreshTip_ready));
+        refreshArrow.clearAnimation();
+        refreshArrow.startAnimation(mRotateUpAnim);
     }
 
     @Override

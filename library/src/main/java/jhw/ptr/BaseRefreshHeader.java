@@ -22,6 +22,7 @@ public class BaseRefreshHeader extends FrameLayout implements RefreshHandler {
 
     public BaseRefreshHeader(Context context) {
         super(context);
+        setWillNotDraw(false);
     }
 
     public BaseRefreshHeader(Context context, AttributeSet attrs) {
