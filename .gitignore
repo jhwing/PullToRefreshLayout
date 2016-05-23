@@ -32,4 +32,4 @@ proguard/
 captures/
 
 *.iml
-.idea/workspace.xml
+.idea/
