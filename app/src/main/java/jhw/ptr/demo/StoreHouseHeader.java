@@ -19,7 +19,7 @@ public class StoreHouseHeader extends View implements RefreshHandler {
     public ArrayList<StoreHouseBarItem> mItemList = new ArrayList<StoreHouseBarItem>();
 
     private int mLineWidth = -1;
-    private float mScale = 1;
+    private float mScale = .5f;
     private int mDropHeight = -1;
     private float mInternalAnimationFactor = 0.7f;
     private int mHorizontalRandomness = -1;
@@ -59,8 +59,8 @@ public class StoreHouseHeader extends View implements RefreshHandler {
     }
 
     private void initView() {
-        mLineWidth = dp2px(2);
-        mDropHeight = dp2px(40);
+        mLineWidth = dp2px(1);
+        mDropHeight = dp2px(5);
         mHorizontalRandomness = getResources().getDisplayMetrics().widthPixels / 2;
     }
 
@@ -110,11 +110,11 @@ public class StoreHouseHeader extends View implements RefreshHandler {
     }
 
     private int getTopOffset() {
-        return getPaddingTop() + dp2px(10);
+        return getPaddingTop() + dp2px(2);
     }
 
     private int getBottomOffset() {
-        return getPaddingBottom() + dp2px(10);
+        return getPaddingBottom() + dp2px(2);
     }
 
     public void initWithString(String str) {
@@ -246,6 +246,7 @@ public class StoreHouseHeader extends View implements RefreshHandler {
 
     @Override
     public void onRefreshPullBegin() {
+        requestLayout();
     }
 
     @Override
@@ -291,22 +292,22 @@ public class StoreHouseHeader extends View implements RefreshHandler {
 
     @Override
     public float spinnerFinalOffset() {
-        return 180;
+        return 250;
     }
 
     @Override
     public float totalDragDistance() {
-        return 180;
+        return 250;
     }
 
     @Override
     public int originalOffsetTop() {
-        return -180;
+        return -150;
     }
 
     @Override
     public int getHeaderHeight() {
-        return 180;
+        return 150;
     }
 
     private class AniController implements Runnable {
