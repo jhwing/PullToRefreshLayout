@@ -32,10 +32,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         refreshLayout = (PullToRefreshLayout) findViewById(R.id.ptrLayout);
         refreshLayout.setPullRefresh(false);
-        refreshHandler = new RefreshHeaderView(this);
+//        refreshHandler = new RefreshHeaderView(this);
+        refreshHandler = new DropHeaderLayout(this);
         StoreHouseHeader header = new StoreHouseHeader(this);
         header.initWithPointList(getPointList());
-        refreshLayout.setHeaderView(header, false);
+        refreshLayout.setHeaderView(refreshHandler, true);
         refreshLayout.setOnRefreshListener(new PullToRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {

@@ -112,12 +112,12 @@ public class DropHeaderLayout extends RelativeLayout implements RefreshHandler {
 
     @Override
     public float spinnerFinalOffset() {
-        return (float) (h + 200);
+        return (float) (h + 50);
     }
 
     @Override
     public float totalDragDistance() {
-        return (float) (h + 200);
+        return (float) (h + 50);
     }
 
     @Override
