@@ -82,9 +82,10 @@ public class PullToRefreshLayout extends ViewGroup implements NestedScrollingPar
 
     public PullToRefreshLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
+        setWillNotDraw(false);
+        ViewCompat.setChildrenDrawingOrderEnabled(this, true);
         // view 移动动画,先快后慢
         mDecelerateInterpolator = new DecelerateInterpolator(DECELERATE_INTERPOLATION_FACTOR);
-
         mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
         final DisplayMetrics metrics = getResources().getDisplayMetrics();
         mSpinnerFinalOffset = DEFAULT_CIRCLE_TARGET * metrics.density;
