@@ -47,16 +47,12 @@ public class DropHeaderLayout extends RelativeLayout implements RefreshHandler {
         layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
         mDropView.setLayoutParams(layoutParams);
         mDropView.setColor(Color.RED);
-//        mDropView.setBackgroundColor(Color.GREEN);
-//        setBackgroundColor(Color.GREEN);
-
     }
 
     @Override
     public void onRefreshPullBegin() {
         mDropView.reset();
         mDropView.showLoadingIcon(true);
-//        mDropView.invalidate();
         mDropView.requestLayout();
     }
 
@@ -85,13 +81,6 @@ public class DropHeaderLayout extends RelativeLayout implements RefreshHandler {
             mDropView.setDistanceY(-((int) ((myOffset - 150) * 0.9f)));
             mDropView.setLayoutParams(layoutParams);
         }
-//        int hh = mDropView.getLayoutParams().height;
-//        mDropView.getLayoutParams().height = hh + offset;
-//        LayoutParams layoutParams = (LayoutParams) mDropView.getLayoutParams();
-//        mDropView.setDistanceY(-((int) ((myOffset - 50) * 0.9f)));
-//        mDropView.setLayoutParams(layoutParams);
-        //mDropView.requestLayout();
-
     }
 
     @Override

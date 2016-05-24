@@ -21,10 +21,10 @@ import android.widget.AbsListView;
 
 /**
  * Created by jihongwen on 16/5/11.
- * <p>
+ * <p/>
  * 基于 {@link android.support.v4.widget.SwipeRefreshLayout}
  * 支持自定义header view
- * <p>
+ * <p/>
  * 刷新方式，自动刷新和松开手指刷新
  */
 public class PullToRefreshLayout extends ViewGroup implements NestedScrollingParent, NestedScrollingChild {
@@ -59,6 +59,7 @@ public class PullToRefreshLayout extends ViewGroup implements NestedScrollingPar
     private boolean mIsBeingDragged;                             // 是否开始拖动
     private boolean mRefreshing = false;
     private boolean mIsPullRefresh = false;
+    private boolean mIsHeaderPullRefresh = true;
     private boolean mReturningToStart = false;
 
     private int mFrom;
@@ -83,8 +84,6 @@ public class PullToRefreshLayout extends ViewGroup implements NestedScrollingPar
     public PullToRefreshLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         setWillNotDraw(false);
-        ViewCompat.setChildrenDrawingOrderEnabled(this, true);
-        // view 移动动画,先快后慢
         mDecelerateInterpolator = new DecelerateInterpolator(DECELERATE_INTERPOLATION_FACTOR);
         mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
         final DisplayMetrics metrics = getResources().getDisplayMetrics();
@@ -126,6 +125,15 @@ public class PullToRefreshLayout extends ViewGroup implements NestedScrollingPar
         mIsPullRefresh = isPullRefresh;
     }
 
+    /**
+     * header view 是否可滑动，默认为可以滑动，一般header 在顶部屏幕之外时，应该可以滑动，如果在mTarget后面可以不滑动
+     *
+     * @param isHeaderPullRefresh
+     */
+    public void setHeaderPullRefresh(boolean isHeaderPullRefresh) {
+        mIsHeaderPullRefresh = isHeaderPullRefresh;
+    }
+
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         ensureTarget();
@@ -152,10 +160,6 @@ public class PullToRefreshLayout extends ViewGroup implements NestedScrollingPar
         final int right = left + mHeaderView.getMeasuredWidth();
         final int bottom = top + mHeaderView.getMeasuredHeight();
         mHeaderView.layout(left, top, right, bottom);
-//        Log.d("jihongwen", "left:" + left + "top:" + top + "right:" + right + "bottom:" + bottom);
-//        Log.d("jihongwen", "mHeaderOffsetTop:" + mHeaderOffsetTop);
-
-        //mHeaderView.layout(childLeft, childTop, childLeft + childWidth, childTop + childHeight);
     }
 
     @Override
@@ -218,7 +222,6 @@ public class PullToRefreshLayout extends ViewGroup implements NestedScrollingPar
 
     @Override
     public void onNestedPreScroll(View target, int dx, int dy, int[] consumed) {
-        // 先于子view滑动
         if (dy > 0 && mTotalUnconsumed > 0) {
             if (dy > mTotalUnconsumed) {
                 consumed[1] = dy - (int) mTotalUnconsumed;
@@ -375,7 +378,7 @@ public class PullToRefreshLayout extends ViewGroup implements NestedScrollingPar
                 if (mIsBeingDragged) {
                     if (overScrollTop > 0) {
                         if (DEBUG)
-                            Log.d("jihongwen", "onTouchEvent");
+                            Log.d(LOG_TAG, "onTouchEvent");
                         moveSpinner(overScrollTop);
                     } else {
                         return false;
@@ -428,7 +431,6 @@ public class PullToRefreshLayout extends ViewGroup implements NestedScrollingPar
             ensureTarget();
             mRefreshing = refreshing;
             if (mRefreshing) {
-                Log.d("jihongwen", "setRefreshing 刷新");
                 mHeaderView.onRefreshing();
                 if (notify) {
                     if (mRefreshListener != null) {
@@ -440,7 +442,6 @@ public class PullToRefreshLayout extends ViewGroup implements NestedScrollingPar
                 }
             } else {
                 mHeaderView.onRefreshComplete();
-                Log.d("jihongwen", "setRefreshing 刷新完成");
                 animateOffsetToStartPosition(mCurrentTargetOffsetTop);
             }
         }
@@ -462,10 +463,6 @@ public class PullToRefreshLayout extends ViewGroup implements NestedScrollingPar
     }
 
     private void moveSpinner(float overScrollTop) {
-//        if (DEBUG)
-//            Log.d("jihongwen", "::::::::::moveSpinner:::::::::");
-
-
         if (mReturningToStart) {
             return;
         }
@@ -494,7 +491,6 @@ public class PullToRefreshLayout extends ViewGroup implements NestedScrollingPar
         int targetY = mOriginalOffsetTop + mm;
 
         // 超过下拉刷新临界值
-//        Log.d("jihongwen", " moveSpinner overScrollTop:" + " overScrollTop:" + overScrollTop + "  mTotalDragDistance:" + mTotalDragDistance);
         if (overScrollTop > mTotalDragDistance) {
             mHeaderView.onRefreshPrepare();
             if (mIsPullRefresh && !mRefreshing) {
@@ -522,12 +518,10 @@ public class PullToRefreshLayout extends ViewGroup implements NestedScrollingPar
             }
             // 正在刷新
             setRefreshing(true, true);
-            Log.d("jihongwen", "finishSpinner 刷新");
         } else {
             mRefreshing = false;
             mHeaderView.onRefreshComplete();
             animateOffsetToStartPosition(mCurrentTargetOffsetTop);
-            Log.d("jihongwen", "finishSpinner 不刷新");
         }
 
     }
@@ -540,13 +534,13 @@ public class PullToRefreshLayout extends ViewGroup implements NestedScrollingPar
      */
     private void moveToStart(float interpolatedTime) {
         int targetTop = (mFrom + (int) ((mOriginalOffsetTop - mFrom) * interpolatedTime));
-//        Log.d("jihongwen", "animateOffsetToStartPosition targetTop" + targetTop);
         int offset = targetTop - mTarget.getTop();
         if (offset == 0 && interpolatedTime == 1) {// 偏移量位0,并且动画执行完成
             mHeaderView.onReturnToStart();
         }
-
-//        Log.d("jihongwen", "moveToStart  mHeaderView.getTop() " + mHeaderView.getTop() + "  mTarget.getTop():" + mTarget.getTop());
+        float originalDragPercent = targetTop / mTotalDragDistance;
+        float dragPercent = Math.min(1f, Math.abs(originalDragPercent));
+        mHeaderView.onRefreshChangePercent(dragPercent);
         setTargetOffsetTopAndBottom(offset, true /* requires update */);
     }
 
@@ -575,8 +569,6 @@ public class PullToRefreshLayout extends ViewGroup implements NestedScrollingPar
     private final Animation mAnimateToCorrectPosition = new Animation() {
         @Override
         public void applyTransformation(float interpolatedTime, Transformation t) {
-            //int endTarget = (int) (mSpinnerFinalOffset - Math.abs(mOriginalOffsetTop));
-//            Log.d("jihongwen", "mAnimateToCorrectPosition mFrom" + mFrom);
             int endTarget = (mHeaderView.getHeaderHeight() - Math.abs(mOriginalOffsetTop));
             int targetTop = (mFrom + (int) ((endTarget - mFrom) * interpolatedTime));
             int offset = targetTop - mTarget.getTop();
@@ -595,16 +587,12 @@ public class PullToRefreshLayout extends ViewGroup implements NestedScrollingPar
 
     private void setTargetOffsetTopAndBottom(int offset, boolean requiresUpdate) {
         mHeaderView.onRefreshChange(offset);
-
         mTarget.offsetTopAndBottom(offset);
         mCurrentTargetOffsetTop = mTarget.getTop();
-
-        mHeaderView.offsetTopAndBottom(offset);
-        mHeaderOffsetTop = mHeaderView.getTop();
-
-//        Log.d("jihongwen", "setTargetOffsetTopAndBottom  mHeaderView getTop() " + mHeaderView.getTop() + " getBottom()" + mHeaderView.getBottom() + "  mTarget.getTop():" + mTarget.getTop());
-//        Log.d("jihongwen", "setTargetOffsetTopAndBottom  mHeaderOffsetTop " + mHeaderOffsetTop + "  mCurrentTargetOffsetTop:" + mCurrentTargetOffsetTop);
-
+        if (mIsHeaderPullRefresh) {
+            mHeaderView.offsetTopAndBottom(offset);
+            mHeaderOffsetTop = mHeaderView.getTop();
+        }
         if (requiresUpdate && android.os.Build.VERSION.SDK_INT < 11) {
             invalidate();
         }

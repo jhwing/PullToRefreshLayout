@@ -282,7 +282,6 @@ public class StoreHouseHeader extends View implements RefreshHandler {
             mItemList.get(i).resetPosition(mHorizontalRandomness);
 
         }
-
     }
 
     @Override
@@ -292,12 +291,12 @@ public class StoreHouseHeader extends View implements RefreshHandler {
 
     @Override
     public float spinnerFinalOffset() {
-        return 250;
+        return 600;
     }
 
     @Override
     public float totalDragDistance() {
-        return 250;
+        return 500;
     }
 
     @Override

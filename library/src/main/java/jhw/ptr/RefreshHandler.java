@@ -53,12 +53,32 @@ public interface RefreshHandler {
      */
     View getHeaderView();
 
+    /**
+     * 可滑动的最大偏移量
+     *
+     * @return
+     */
     float spinnerFinalOffset();
 
+    /**
+     * 可刷新的最大偏移量
+     *
+     * @return
+     */
     float totalDragDistance();
 
+    /**
+     * 相对于顶部view的偏移量
+     *
+     * @return
+     */
     int originalOffsetTop();
 
+    /**
+     * header view 的高度
+     *
+     * @return
+     */
     int getHeaderHeight();
 
 }
