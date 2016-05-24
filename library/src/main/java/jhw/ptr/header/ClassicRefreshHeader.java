@@ -18,7 +18,7 @@ import jhw.ptr.RefreshHandler;
 /**
  * Created by jihongwen on 16/5/12.
  */
-public class RefreshHeaderView extends RelativeLayout implements RefreshHandler {
+public class ClassicRefreshHeader extends RelativeLayout implements RefreshHandler {
 
 
     public final static int STATE_NORMAL = 0;
@@ -39,11 +39,11 @@ public class RefreshHeaderView extends RelativeLayout implements RefreshHandler 
 
     int h;
 
-    public RefreshHeaderView(Context context) {
+    public ClassicRefreshHeader(Context context) {
         this(context, null);
     }
 
-    public RefreshHeaderView(Context context, AttributeSet attrs) {
+    public ClassicRefreshHeader(Context context, AttributeSet attrs) {
         super(context, attrs);
         setWillNotDraw(false);
         View.inflate(context, R.layout.refresh_header_view, this);
