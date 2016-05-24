@@ -1,4 +1,4 @@
-package jhw.ptr.demo;
+package jhw.ptr.header;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -40,7 +40,7 @@ public class DropHeaderLayout extends RelativeLayout implements RefreshHandler {
 
         mDropView = new DropView(context);
         addView(mDropView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        RelativeLayout.LayoutParams layoutParams = (LayoutParams) mDropView.getLayoutParams();
+        LayoutParams layoutParams = (LayoutParams) mDropView.getLayoutParams();
         layoutParams.width = (int) (60 * metrics.density);
         layoutParams.height = (int) (60 * metrics.density);
         h = (int) (60 * metrics.density);

@@ -1,4 +1,4 @@
-package jhw.ptr.demo;
+package jhw.ptr.header;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -291,12 +291,12 @@ public class StoreHouseHeader extends View implements RefreshHandler {
 
     @Override
     public float spinnerFinalOffset() {
-        return 600;
+        return 250;
     }
 
     @Override
     public float totalDragDistance() {
-        return 500;
+        return 250;
     }
 
     @Override

@@ -1,4 +1,4 @@
-package jhw.ptr.demo;
+package jhw.ptr.header;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;

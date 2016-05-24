@@ -1,4 +1,4 @@
-package jhw.ptr.demo;
+package jhw.ptr.header;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -16,6 +16,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
+
+import jhw.ptr.R;
 
 
 public class DropView extends FrameLayout {

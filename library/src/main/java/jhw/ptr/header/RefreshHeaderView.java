@@ -1,4 +1,4 @@
-package jhw.ptr.demo;
+package jhw.ptr.header;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -12,6 +12,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import jhw.ptr.R;
 import jhw.ptr.RefreshHandler;
 
 /**

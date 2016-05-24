@@ -1,4 +1,4 @@
-package jhw.ptr.demo;
+package jhw.ptr;
 
 import android.content.res.Resources;
 import android.os.Build;

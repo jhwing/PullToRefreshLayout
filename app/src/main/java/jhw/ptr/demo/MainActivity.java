@@ -14,6 +14,8 @@ import java.util.List;
 
 import jhw.ptr.PullToRefreshLayout;
 import jhw.ptr.RefreshHandler;
+import jhw.ptr.header.DropHeaderLayout;
+import jhw.ptr.header.StoreHouseHeader;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,8 +25,6 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerView;
 
     RefreshHandler refreshHandler;
-
-    boolean is = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
